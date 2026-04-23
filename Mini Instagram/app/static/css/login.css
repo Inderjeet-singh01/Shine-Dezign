@@ -1,0 +1,51 @@
+/* HEADER */
+.login-header {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.login-header h1 {
+    font-size: 30px;
+    font-weight: 700;
+}
+
+.login-header p {
+    color: #6b7280;
+    font-size: 14px;
+}
+
+/* INPUT */
+.input-group {
+    margin-bottom: 15px;
+}
+
+.input-field {
+    width: 100%;
+    padding: 14px;
+    border-radius: 12px;
+    border: 1px solid #e5e7eb;
+    font-size: 15px;
+    transition: 0.2s;
+}
+
+.input-field:focus {
+    border-color: #6366f1;
+    box-shadow: 0 0 0 3px rgba(99,102,241,0.2);
+    outline: none;
+}
+
+/* LINKS */
+.link-text {
+    margin-top: 15px;
+    text-align: center;
+}
+
+.link-text a {
+    text-decoration: none;
+    color: #4f46e5;
+    font-weight: 500;
+}
+
+.link-text a:hover {
+    text-decoration: underline;
+}

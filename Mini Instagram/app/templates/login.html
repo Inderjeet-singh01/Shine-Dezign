@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+
+    <link rel="stylesheet" href="/static/css/base.css">
+    <link rel="stylesheet" href="/static/css/login.css">
+</head>
+<body>
+
+<div class="top-nav">
+    <a href="/" class="home-link">Home</a>
+    <div class="app-name">Mini Instagram</div>
+</div>
+
+<div class="page-wrapper">
+    <div class="card">
+
+        <div class="login-header">
+            <h1>Welcome Back</h1>
+            <p>Login to continue sharing your posts</p>
+        </div>
+
+        <form id="loginForm">
+
+            <div class="input-group">
+                <input
+                    type="text"
+                    id="identity"
+                    class="input-field"
+                    placeholder="Enter username or email"
+                    required>
+            </div>
+
+            <div class="input-group">
+                <input
+                    type="password"
+                    id="password"
+                    class="input-field"
+                    placeholder="Enter password"
+                    required>
+            </div>
+
+            <div id="message" class="message-box"></div>
+
+            <br>
+
+            <button type="submit" class="primary-btn" id="btn">Login</button>
+
+        </form>
+
+        <div class="link-text">
+            <a href="/register-page">Create new account</a>
+        </div>
+
+    </div>
+</div>
+
+<script>
+const form = document.getElementById("loginForm");
+const message = document.getElementById("message");
+const btn = document.getElementById("btn");
+
+form.addEventListener("submit", async function(e) {
+    e.preventDefault();
+
+    const payload = {
+        identity: document.getElementById("identity").value,
+        password: document.getElementById("password").value
+    };
+
+    btn.innerText = "Logging in...";
+    btn.disabled = true;
+
+    try {
+        const response = await fetch("/auth/login-session", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(payload)
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+            message.innerText = data.message;
+            message.className = "message-box success";
+
+            localStorage.setItem("user_id", data.user_id);
+            localStorage.setItem("username", data.username);
+            localStorage.setItem("access_token", data.access_token);
+
+            setTimeout(() => {
+                window.location.href = "/dashboard";
+            }, 1000);
+        } else {
+            message.innerText = data.detail || "Login failed";
+            message.className = "message-box error";
+        }
+    } catch {
+        message.innerText = "Server error";
+        message.className = "message-box error";
+    }
+
+    btn.innerText = "Login";
+    btn.disabled = false;
+});
+</script>
+
+</body>
+</html>

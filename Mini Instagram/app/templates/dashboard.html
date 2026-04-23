@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+
+    <link rel="stylesheet" href="/static/css/base.css">
+    <link rel="stylesheet" href="/static/css/dashboard.css">
+</head>
+<body>
+
+<div class="page-wrapper">
+    <div class="card">
+        <div class="dashboard-header">
+            <h1>Dashboard</h1>
+            <p id="welcomeText" class="welcome-text">Loading...</p>
+        </div>
+
+        <div class="dashboard-actions">
+            <a href="/create-post-page" class="primary-btn action-btn">
+                ➕ Create New Post
+            </a>
+
+            <a href="/posts-page" class="secondary-btn action-btn">
+                📄 View All Posts
+            </a>
+
+            <button id="logoutBtn" class="secondary-btn action-btn" type="button">
+                🚪 Logout
+            </button>
+        </div>
+    </div>
+</div>
+
+<script>
+const welcomeText = document.getElementById("welcomeText");
+const logoutBtn = document.getElementById("logoutBtn");
+
+async function loadProfile() {
+    try {
+        const response = await fetch("/auth/me");
+
+        if (!response.ok) {
+            window.location.href = "/login-page";
+            return;
+        }
+
+        const data = await response.json();
+        welcomeText.innerText = "Welcome, " + data.username + " 👋";
+
+        localStorage.setItem("user_id", data.user_id);
+        localStorage.setItem("username", data.username);
+    } catch {
+        window.location.href = "/login-page";
+    }
+}
+
+logoutBtn.addEventListener("click", async () => {
+    try {
+        await fetch("/auth/logout-session", { method: "POST" });
+    } catch {}
+
+    localStorage.removeItem("user_id");
+    localStorage.removeItem("username");
+    localStorage.removeItem("access_token");
+    window.location.href = "/login-page";
+});
+
+loadProfile();
+</script>
+
+</body>
+</html>

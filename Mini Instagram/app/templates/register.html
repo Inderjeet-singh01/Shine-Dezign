@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+
+    <link rel="stylesheet" href="/static/css/base.css">
+    <link rel="stylesheet" href="/static/css/register.css">
+</head>
+<body>
+
+    <div class="top-nav">
+        <a href="/" class="home-link">Home</a>
+        <div class="app-name">Mini Instagram</div>
+    </div>
+
+    <div class="page-wrapper">
+        <div class="card">
+
+            <div class="register-header">
+                <h1>Create Account</h1>
+                <p>Join us and start sharing your posts</p>
+            </div>
+
+            <form id="registerForm">
+
+                <div class="input-group">
+                    <input 
+                        type="text" 
+                        id="username"
+                        class="input-field"
+                        placeholder="Enter username"
+                        required>
+                </div>
+
+                <div class="input-group">
+                    <input 
+                        type="email" 
+                        id="email"
+                        class="input-field"
+                        placeholder="Enter email"
+                        required>
+                </div>
+
+                <div class="input-group">
+                    <input 
+                        type="password" 
+                        id="password"
+                        class="input-field"
+                        placeholder="Enter password"
+                        required>
+                    <div class="password-hint">Minimum 6 characters recommended</div>
+                </div>
+
+                <div id="message" class="message-box"></div>
+
+                <br>
+
+                <button type="submit" class="primary-btn" id="btn">Create Account</button>
+
+            </form>
+
+            <div class="link-text">
+                <a href="/login-page">Already have an account? Login</a>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        const form = document.getElementById("registerForm");
+        const message = document.getElementById("message");
+        const btn = document.getElementById("btn");
+
+        form.addEventListener("submit", async function(e) {
+            e.preventDefault();
+
+            const payload = {
+                username: document.getElementById("username").value,
+                email: document.getElementById("email").value,
+                password: document.getElementById("password").value
+            };
+
+            btn.innerText = "Creating...";
+            btn.disabled = true;
+
+            try {
+                const response = await fetch("/auth/register", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(payload)
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    message.innerText = data.message;
+                    message.className = "message-box success";
+
+                    form.reset();
+
+                    setTimeout(() => {
+                        window.location.href = "/login-page";
+                    }, 1200);
+
+                } else {
+                    message.innerText = data.detail || "Registration failed";
+                    message.className = "message-box error";
+                }
+
+            } catch {
+                message.innerText = "Server error";
+                message.className = "message-box error";
+            }
+
+            btn.innerText = "Create Account";
+            btn.disabled = false;
+        });
+    </script>
+
+</body>
+</html>

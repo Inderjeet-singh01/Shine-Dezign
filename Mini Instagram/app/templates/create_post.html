@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Post</title>
+
+    <link rel="stylesheet" href="/static/css/base.css">
+    <link rel="stylesheet" href="/static/css/create_post.css">
+</head>
+<body>
+
+<div class="page-wrapper">
+    <div class="card">
+
+        <div class="post-header">
+            <h1>Create New Post</h1>
+            <p>Share your ideas with the world</p>
+        </div>
+
+        <form id="postForm">
+
+            <textarea
+                id="content"
+                class="post-textarea"
+                placeholder="What's on your mind..."
+                maxlength="800"
+                required>
+            </textarea>
+
+            <div class="char-counter">
+                <span id="count">0</span>/800
+            </div>
+
+            <input type="file" id="file" class="file-input" accept="image/*" required>
+
+            <div class="preview-box" id="previewBox">
+                <img id="preview">
+            </div>
+
+            <div id="message" class="message-box"></div>
+
+            <br>
+
+            <button class="primary-btn" id="btn">Create Post</button>
+            <a href="/dashboard" class="secondary-btn">Back to Dashboard</a>
+
+        </form>
+
+    </div>
+</div>
+
+<script>
+const form = document.getElementById("postForm");
+const fileInput = document.getElementById("file");
+const previewBox = document.getElementById("previewBox");
+const preview = document.getElementById("preview");
+const message = document.getElementById("message");
+const btn = document.getElementById("btn");
+const content = document.getElementById("content");
+const count = document.getElementById("count");
+
+content.addEventListener("input", () => {
+    count.innerText = content.value.length;
+});
+
+fileInput.addEventListener("change", () => {
+    const file = fileInput.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = () => {
+        preview.src = reader.result;
+        previewBox.style.display = "block";
+    };
+    reader.readAsDataURL(file);
+});
+
+form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    btn.innerText = "Posting...";
+    btn.disabled = true;
+
+    const formData = new FormData();
+    formData.append("content", content.value);
+    formData.append("file", fileInput.files[0]);
+
+    try {
+        const res = await fetch("/posts", {
+            method: "POST",
+            body: formData
+        });
+
+        const data = await res.json();
+
+        if (res.ok) {
+            message.innerText = data.message;
+            message.className = "message-box success";
+            form.reset();
+            previewBox.style.display = "none";
+            count.innerText = "0";
+        } else {
+            message.innerText = data.detail || "Post creation failed";
+            message.className = "message-box error";
+
+            if (res.status === 401) {
+                setTimeout(() => {
+                    window.location.href = "/login-page";
+                }, 800);
+            }
+        }
+    } catch {
+        message.innerText = "Server error";
+        message.className = "message-box error";
+    }
+
+    btn.innerText = "Create Post";
+    btn.disabled = false;
+});
+</script>
+
+</body>
+</html>

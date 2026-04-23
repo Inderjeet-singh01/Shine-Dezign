@@ -1,0 +1,32 @@
+/* HEADER */
+.dashboard-header {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.dashboard-header h1 {
+    font-size: 32px;
+    font-weight: 700;
+}
+
+.welcome-text {
+    margin-top: 10px;
+    font-size: 15px;
+    color: #6b7280;
+}
+
+/* ACTIONS */
+.dashboard-actions {
+    margin-top: 25px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+/* ICON STYLE */
+.action-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
