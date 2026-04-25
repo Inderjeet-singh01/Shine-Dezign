@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>KAUR THREADS Bill</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: Arial, sans-serif; }
+    body { background: #f5f2eb; padding: 12px; color: #2f314d; }
+    .container { max-width: 920px; margin: auto; }
+
+    .card {
+      background: #fff;
+      border-radius: 18px;
+      box-shadow: 0 10px 28px rgba(0,0,0,0.08);
+      margin-bottom: 16px;
+      overflow: hidden;
+    }
+
+    .header {
+      background: linear-gradient(135deg, #6d6d9b, #8b6f8f);
+      color: #fff;
+      text-align: center;
+      padding: 20px;
+    }
+
+    .header h1 { font-size: 26px; letter-spacing: 1px; }
+    .section { padding: 16px; }
+
+    .top-fields {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .field label {
+      display: block;
+      font-size: 13px;
+      font-weight: bold;
+      margin-bottom: 5px;
+      color: #444;
+    }
+
+    .field input {
+      width: 100%;
+      padding: 11px;
+      border: 1px solid #d8d3ca;
+      border-radius: 10px;
+      font-size: 14px;
+      background: #fff;
+    }
+
+    .table-wrap { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; }
+    th, td { padding: 10px; border-bottom: 1px solid #ece6dc; font-size: 14px; }
+    th { background: #f5efe2; }
+    td input {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #d8d3ca;
+      border-radius: 8px;
+      font-size: 14px;
+    }
+    td input[readonly] { background: #faf8f2; }
+
+    .actions { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 14px; }
+    button {
+      border: none;
+      border-radius: 10px;
+      padding: 10px 14px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .btn1 { background: #62648f; color: #fff; }
+    .btn2 { background: #8d7080; color: #fff; }
+    .btn3 { background: #ece7df; color: #333; }
+
+    .summary { display: flex; justify-content: flex-end; margin-top: 14px; }
+    .summary-box {
+      background: #f8f3e8;
+      border: 1px solid #ddd4c3;
+      border-radius: 12px;
+      padding: 10px 14px;
+      font-weight: bold;
+      min-width: 170px;
+    }
+    .summary-line {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      font-size: 14px;
+      line-height: 1.35;
+    }
+
+    .invoice {
+      background: #f8f4ec;
+      padding: 28px 26px 22px;
+      color: #323552;
+    }
+
+    .invoice-head {
+      text-align: center;
+      padding-bottom: 14px;
+      border-bottom: 2px solid #cfc7ba;
+      margin-bottom: 16px;
+    }
+
+    .invoice-head h2 {
+      font-size: 38px;
+      letter-spacing: 2px;
+      font-weight: 800;
+      color: #3f456d;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      line-height: 1.1;
+    }
+
+    .invoice-head .sub {
+      font-size: 18px;
+      letter-spacing: 1.5px;
+      font-weight: 700;
+      color: #2f314d;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .bill-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 16px;
+      margin-top: 8px;
+      text-align: left;
+    }
+
+    .customer-block {
+      font-size: 15px;
+      font-weight: 700;
+      color: #2f314d;
+      flex: 1;
+    }
+
+    .meta-row {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 6px;
+      font-size: 15px;
+      font-weight: 700;
+      flex-wrap: wrap;
+      text-align: right;
+    }
+
+    .invoice-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 14px;
+      border: 2px solid #9da1ad;
+      background: rgba(255,255,255,0.2);
+    }
+
+    .invoice-table th,
+    .invoice-table td {
+      border: 1px solid #9da1ad;
+      padding: 11px 12px;
+      font-size: 15px;
+      vertical-align: top;
+    }
+
+    .invoice-table th {
+      background: #e9ddc5;
+      color: #2f314d;
+      text-align: center;
+      font-size: 15px;
+    }
+
+    .invoice-table td:nth-child(1),
+    .invoice-table td:nth-child(3),
+    .invoice-table td:nth-child(4) {
+      text-align: center;
+      white-space: nowrap;
+    }
+
+    .total-wrap {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 16px;
+    }
+
+    .total-table {
+      width: 250px;
+      border-collapse: collapse;
+      font-weight: 700;
+      color: #2f314d;
+    }
+
+    .total-table td {
+      border: 2px solid #9da1ad;
+      padding: 8px 10px;
+      font-size: 13px;
+      line-height: 1.25;
+    }
+
+    .total-label { text-align: right; background: transparent; }
+    .total-amount { background: #e9ddc5; text-align: center; min-width: 90px; }
+
+    .thank {
+      text-align: center;
+      margin-top: 18px;
+      padding-top: 12px;
+      border-top: 2px solid #d7d0c3;
+      font-size: 13px;
+      letter-spacing: 1px;
+      font-weight: 800;
+      text-transform: uppercase;
+      color: #2f314d;
+      line-height: 1.4;
+    }
+
+    @media (max-width: 700px) {
+      body { padding: 8px; }
+      .card { border-radius: 14px; margin-bottom: 12px; }
+      .header { padding: 15px; }
+      .header h1 { font-size: 22px; }
+      .section { padding: 12px; }
+      .top-fields { grid-template-columns: 1fr; gap: 10px; }
+      .field label { font-size: 12px; }
+      .field input { padding: 10px; font-size: 13px; }
+      th, td { padding: 8px 6px; font-size: 12px; }
+      td input { padding: 7px; font-size: 12px; }
+      .actions button { flex: 1 1 120px; font-size: 12px; padding: 9px 10px; }
+      .summary-box { min-width: 150px; padding: 8px 10px; }
+      .summary-line { font-size: 12px; }
+      .invoice { padding: 18px 12px 16px; }
+      .invoice-head { padding-bottom: 10px; margin-bottom: 10px; }
+      .invoice-head h2 { font-size: 26px; letter-spacing: 1px; }
+      .invoice-head .sub { font-size: 12px; letter-spacing: 1px; margin-bottom: 8px; }
+      .bill-meta { flex-direction: row; justify-content: space-between; gap: 10px; }
+      .customer-block { font-size: 11px; }
+      .meta-row { gap: 4px; font-size: 11px; }
+      .invoice-table th, .invoice-table td { padding: 8px 6px; font-size: 12px; }
+      .invoice-table th { font-size: 12px; }
+      .total-wrap { margin-top: 12px; }
+      .total-table { width: 210px; }
+      .total-table td { padding: 7px 8px; font-size: 11px; }
+      .total-amount { min-width: 78px; }
+      .thank { margin-top: 14px; padding-top: 10px; font-size: 11px; letter-spacing: 0.6px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card no-print">
+      <div class="header">
+        <h1>KAUR THREADS</h1>
+      </div>
+      <div class="section">
+        <div class="top-fields">
+          <div class="field">
+            <label for="date">Date</label>
+            <input type="date" id="date" />
+          </div>
+          <div class="field">
+            <label for="billNo">Bill Number</label>
+            <input type="text" id="billNo" placeholder="Auto generated" />
+          </div>
+          <div class="field">
+            <label for="customer">Customer Name</label>
+            <input type="text" id="customer" placeholder="Enter customer name" oninput="gen()" />
+          </div>
+
+          <div class="field">
+            <label for="discount">Discount</label>
+            <input type="number" id="discount" min="0" step="0.01" placeholder="Enter discount amount" oninput="gen()" />
+          </div>
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Qty</th>
+                <th>Particulars</th>
+                <th>Price</th>
+                <th>Amount</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="body"></tbody>
+          </table>
+        </div>
+
+        <div class="actions">
+          <button class="btn1" onclick="addRow()">Add Product</button>
+          <button class="btn2" onclick="gen()">Generate Bill</button>
+          <button class="btn3" onclick="clr()">Clear</button>
+        </div>
+
+        <div class="summary">
+          <div class="summary-box">
+            <div class="summary-line"><strong>Final Total</strong><strong>₹ <span id="tot">0.00</span></strong></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="invoice" id="bill">
+        <div class="invoice-head">
+          <h2>KAUR THREADS</h2>
+          <div class="sub">BOUTIQUE BILL</div>
+
+          <div class="bill-meta">
+            <div class="customer-block">
+              Customer Name: <span id="pcustomer">--</span>
+            </div>
+
+            <div class="meta-row">
+              <div>Date: <span id="pdate">--</span></div>
+              <div>Bill No.: <span id="pbillno">--</span></div>
+            </div>
+          </div>
+        </div>
+
+        <table class="invoice-table">
+          <thead>
+            <tr>
+              <th>Qty.</th>
+              <th>Particulars</th>
+              <th>Price</th>
+              <th>Amount</th>
+            </tr>
+          </thead>
+          <tbody id="pbody">
+            <tr>
+              <td colspan="4" style="text-align:center; padding: 24px;">Your final bill will appear here</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="total-wrap">
+          <table class="total-table">
+            <tr id="discountBillRow" style="display:none;">
+              <td class="total-label">DISCOUNT:</td>
+              <td class="total-amount">₹ <span id="pdiscount">0.00</span></td>
+            </tr>
+            <tr>
+              <td class="total-label">FINAL TOTAL:</td>
+              <td class="total-amount">₹ <span id="ptot">0.00</span></td>
+            </tr>
+          </table>
+        </div>
+
+        <div class="thank">THANK YOU FOR CHOOSING US</div>
+      </div>
+
+      <div class="section no-print" style="padding-top:0;">
+        <div class="actions" style="justify-content:center;">
+          <button class="btn1" onclick="downloadImage()">Download Image</button>
+          <button class="btn2" onclick="downloadPDF()">Download PDF</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const body = document.getElementById('body');
+
+    function generateBillNumber() {
+      let n = Number(localStorage.getItem('kaur_threads_bill_no') || '0');
+      if (!n) {
+        n = 1;
+        localStorage.setItem('kaur_threads_bill_no', '1');
+      }
+      return 'KT-' + String(n).padStart(4, '0');
+    }
+
+    function advanceBillNumber() {
+      let n = Number(localStorage.getItem('kaur_threads_bill_no') || '0');
+      n += 1;
+      localStorage.setItem('kaur_threads_bill_no', String(n));
+      return 'KT-' + String(n).padStart(4, '0');
+    }
+
+    function formatDateToDDMMYYYY(value) {
+      if (!value) return '--';
+      const parts = value.split('-');
+      if (parts.length !== 3) return value;
+      return `${parts[2]}-${parts[1]}-${parts[0]}`;
+    }
+
+    function formatMoney(num) {
+      return Number(num || 0).toLocaleString('en-IN', {
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 2
+      });
+    }
+
+    function addRow(qty = '', name = '', price = '') {
+      const r = document.createElement('tr');
+      r.innerHTML = `
+        <td><input type="number" min="0" step="0.01" placeholder="Qty" value="${qty}" oninput="calc(this)"></td>
+        <td><input type="text" placeholder="Particulars" value="${name}" oninput="gen()"></td>
+        <td><input type="number" min="0" step="0.01" placeholder="Price" value="${price}" oninput="calc(this)"></td>
+        <td><input type="text" readonly></td>
+        <td><button class="btn3" onclick="delRow(this)">X</button></td>
+      `;
+      body.appendChild(r);
+      calc(r.querySelector('input'));
+    }
+
+    function calc(el) {
+      const r = el.closest('tr');
+      const qty = parseFloat(r.children[0].querySelector('input').value) || 0;
+      const price = parseFloat(r.children[2].querySelector('input').value) || 0;
+      const amount = qty * price;
+      r.children[3].querySelector('input').value = formatMoney(amount);
+      gen();
+    }
+
+    function delRow(btn) {
+      btn.closest('tr').remove();
+      gen();
+    }
+
+    function calculateTotals() {
+      let subtotal = 0;
+      document.querySelectorAll('#body tr').forEach(r => {
+        const qty = parseFloat(r.children[0].querySelector('input').value) || 0;
+        const price = parseFloat(r.children[2].querySelector('input').value) || 0;
+        subtotal += qty * price;
+      });
+      const discount = Math.max(0, parseFloat(document.getElementById('discount').value) || 0);
+      const finalTotal = Math.max(0, subtotal - discount);
+      return { subtotal, discount, finalTotal };
+    }
+
+    function gen() {
+      const rows = document.querySelectorAll('#body tr');
+      let html = '';
+
+      rows.forEach(r => {
+        const qtyText = r.children[0].querySelector('input').value || '0';
+        const qty = parseFloat(qtyText) || 0;
+        const name = r.children[1].querySelector('input').value || '-';
+        const price = parseFloat(r.children[2].querySelector('input').value) || 0;
+        const amount = qty * price;
+
+        html += `
+          <tr>
+            <td>${qtyText}</td>
+            <td>${name}</td>
+            <td>${formatMoney(price)}</td>
+            <td>${formatMoney(amount)}</td>
+          </tr>
+        `;
+      });
+
+      document.getElementById('pbody').innerHTML = html || `
+        <tr>
+          <td colspan="4" style="text-align:center; padding:24px;">Your final bill will appear here</td>
+        </tr>
+      `;
+
+      const totals = calculateTotals();
+      const showDiscount = totals.discount > 0;
+      document.getElementById('discountBillRow').style.display = showDiscount ? 'table-row' : 'none';
+      document.getElementById('pdiscount').innerText = formatMoney(totals.discount);
+      document.getElementById('ptot').innerText = formatMoney(totals.finalTotal);
+      document.getElementById('tot').innerText = formatMoney(totals.finalTotal);
+      document.getElementById('pdate').innerText = formatDateToDDMMYYYY(document.getElementById('date').value);
+      document.getElementById('pbillno').innerText = document.getElementById('billNo').value || '--';
+      document.getElementById('pcustomer').innerText = document.getElementById('customer').value || '--';
+    }
+
+    async function getCanvas() {
+      gen();
+      return await html2canvas(document.getElementById('bill'), {
+        scale: 2,
+        backgroundColor: '#f8f4ec',
+        useCORS: true
+      });
+    }
+
+    async function downloadImage() {
+      const canvas = await getCanvas();
+      const link = document.createElement('a');
+      const billNo = document.getElementById('billNo').value || 'bill';
+      link.download = `${billNo}.jpg`;
+      link.href = canvas.toDataURL('image/jpeg', 0.95);
+      link.click();
+    }
+
+    async function downloadPDF() {
+      const { jsPDF } = window.jspdf;
+      const canvas = await getCanvas();
+      const imgData = canvas.toDataURL('image/jpeg', 0.95);
+      const pdf = new jsPDF('p', 'mm', 'a4');
+      const pageWidth = pdf.internal.pageSize.getWidth();
+      const pageHeight = pdf.internal.pageSize.getHeight();
+      const margin = 8;
+      const usableWidth = pageWidth - margin * 2;
+      const imgHeight = canvas.height * usableWidth / canvas.width;
+
+      let heightLeft = imgHeight;
+      let position = margin;
+
+      pdf.addImage(imgData, 'JPEG', margin, position, usableWidth, imgHeight);
+      heightLeft -= (pageHeight - margin * 2);
+
+      while (heightLeft > 0) {
+        position = heightLeft - imgHeight + margin;
+        pdf.addPage();
+        pdf.addImage(imgData, 'JPEG', margin, position, usableWidth, imgHeight);
+        heightLeft -= (pageHeight - margin * 2);
+      }
+
+      const billNo = document.getElementById('billNo').value || 'bill';
+      pdf.save(`${billNo}.pdf`);
+    }
+
+    function clr() {
+      body.innerHTML = '';
+      document.getElementById('discount').value = '';
+      document.getElementById('billNo').value = advanceBillNumber();
+      addRow();
+      gen();
+    }
+
+    addRow();
+    document.getElementById('date').value = new Date().toISOString().split('T')[0];
+    document.getElementById('billNo').value = generateBillNumber();
+    gen();
+  </script>
+</body>
+</html>

@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Student Helpline</title>
+
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Segoe UI", Arial, sans-serif;
+}
+
+body {
+  background: #f6f7fb;
+  color: #092b63;
+}
+
+.navbar {
+  width: 100%;
+  background: #092b63;
+  color: white;
+  padding: 14px 22px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 18px;
+  flex-wrap: wrap;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.logo {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: white;
+  padding: 4px;
+}
+
+.brand h1 {
+  font-size: 26px;
+  line-height: 1.1;
+}
+
+.brand span {
+  color: #ffc400;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.nav-links a {
+  color: white;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.call-top {
+  background: #ffc400;
+  color: #092b63 !important;
+  padding: 11px 18px;
+  border-radius: 12px;
+  font-weight: 800;
+}
+
+.hero {
+  background: linear-gradient(135deg, #fff2b8, #ffc93c);
+  padding: 60px 7%;
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  align-items: center;
+  gap: 35px;
+}
+
+.hero h2 {
+  font-size: 58px;
+  line-height: 1.05;
+  font-weight: 900;
+  margin-bottom: 18px;
+}
+
+.hero p {
+  font-size: 22px;
+  line-height: 1.5;
+  margin-bottom: 25px;
+}
+
+.btn-row {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.btn {
+  display: inline-block;
+  text-decoration: none;
+  padding: 15px 24px;
+  border-radius: 14px;
+  font-weight: 800;
+}
+
+.primary {
+  background: #092b63;
+  color: white;
+}
+
+.secondary {
+  background: white;
+  color: #092b63;
+}
+
+.hero-image {
+  text-align: center;
+}
+
+.hero-image img {
+  width: 100%;
+  max-width: 380px;
+  border-radius: 50%;
+  background: white;
+  padding: 14px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.18);
+}
+
+.features {
+  background: white;
+  margin: -35px 5% 30px;
+  padding: 28px;
+  border-radius: 24px;
+  box-shadow: 0 12px 32px rgba(0,0,0,0.12);
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 18px;
+}
+
+.feature {
+  text-align: center;
+  padding: 12px;
+  border-right: 1px solid #ddd;
+}
+
+.feature:last-child {
+  border-right: none;
+}
+
+.icon {
+  width: 66px;
+  height: 66px;
+  border-radius: 50%;
+  background: #ffc400;
+  display: grid;
+  place-items: center;
+  margin: 0 auto 12px;
+  font-size: 30px;
+}
+
+.feature h3 {
+  font-size: 17px;
+  margin-bottom: 8px;
+}
+
+.feature p {
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.drive-section {
+  margin: 30px 5%;
+  background: #092b63;
+  color: white;
+  border-radius: 24px;
+  padding: 34px;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 25px;
+  box-shadow: 0 12px 32px rgba(0,0,0,0.16);
+}
+
+.drive-icon {
+  width: 120px;
+  height: 120px;
+  background: white;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-size: 55px;
+}
+
+.drive-section h2 {
+  font-size: 30px;
+  margin-bottom: 8px;
+}
+
+.drive-btn {
+  background: #ffc400;
+  color: #092b63;
+  text-decoration: none;
+  padding: 15px 22px;
+  border-radius: 14px;
+  font-weight: 900;
+  white-space: nowrap;
+}
+
+.contact {
+  margin: 35px 5%;
+}
+
+.contact-title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 22px;
+}
+
+.contact-title h2 {
+  font-size: 30px;
+}
+
+.contact-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+
+.contact-card {
+  background: white;
+  border-radius: 22px;
+  padding: 24px 18px;
+  text-align: center;
+  box-shadow: 0 10px 28px rgba(0,0,0,0.12);
+}
+
+.avatar {
+  width: 74px;
+  height: 74px;
+  border-radius: 50%;
+  background: #ffc400;
+  display: grid;
+  place-items: center;
+  margin: 0 auto 14px;
+  font-size: 34px;
+}
+
+.contact-card h3 {
+  margin-bottom: 10px;
+}
+
+.contact-card p {
+  font-size: 18px;
+  margin-bottom: 14px;
+}
+
+.call-btn {
+  display: inline-block;
+  background: #092b63;
+  color: white;
+  text-decoration: none;
+  padding: 12px 20px;
+  border-radius: 12px;
+  font-weight: 800;
+}
+
+.footer {
+  margin: 35px 5% 0;
+  background: #092b63;
+  color: white;
+  text-align: center;
+  padding: 30px 20px;
+  border-radius: 26px 26px 0 0;
+}
+
+.footer h2 {
+  color: #ffc400;
+  margin-top: 8px;
+}
+
+/* PHONE SCREEN FIX */
+@media (max-width: 768px) {
+  .navbar {
+    justify-content: center;
+    text-align: center;
+    padding: 16px 12px;
+  }
+
+  .brand {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .logo {
+    width: 62px;
+    height: 62px;
+  }
+
+  .brand h1 {
+    font-size: 22px;
+  }
+
+  .nav-links {
+    width: 100%;
+    justify-content: center;
+    gap: 12px;
+  }
+
+  .nav-links a {
+    font-size: 14px;
+  }
+
+  .call-top {
+    padding: 9px 14px;
+  }
+
+  .hero {
+    grid-template-columns: 1fr;
+    padding: 36px 22px;
+    text-align: center;
+  }
+
+  .hero h2 {
+    font-size: 38px;
+  }
+
+  .hero p {
+    font-size: 18px;
+  }
+
+  .btn-row {
+    justify-content: center;
+  }
+
+  .hero-image img {
+    max-width: 240px;
+  }
+
+  .features {
+    margin: 20px 16px;
+    grid-template-columns: 1fr;
+    padding: 20px;
+  }
+
+  .feature {
+    border-right: none;
+    border-bottom: 1px solid #ddd;
+  }
+
+  .feature:last-child {
+    border-bottom: none;
+  }
+
+  .drive-section {
+    margin: 20px 16px;
+    grid-template-columns: 1fr;
+    text-align: center;
+    padding: 24px;
+  }
+
+  .drive-icon {
+    margin: auto;
+    width: 92px;
+    height: 92px;
+    font-size: 42px;
+  }
+
+  .drive-section h2 {
+    font-size: 24px;
+  }
+
+  .drive-btn {
+    width: 100%;
+    display: block;
+  }
+
+  .contact {
+    margin: 24px 16px;
+  }
+
+  .contact-title {
+    justify-content: center;
+    text-align: center;
+  }
+
+  .contact-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .footer {
+    margin: 24px 16px 0;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header class="navbar">
+  <div class="brand">
+    <img src="soi_logo.png" alt="SOI Logo" class="logo">
+    <div>
+      <h1>Student <span>Helpline</span></h1>
+      <p>We’re here to support your study journey!</p>
+    </div>
+  </div>
+
+  <nav class="nav-links">
+    <a href="#">Home</a>
+    <a href="#resources">Resources</a>
+    <a href="#contact">Contact</a>
+    <a href="#about">About</a>
+    <a href="tel:9463870579" class="call-top">📞 Call Us</a>
+  </nav>
+</header>
+
+<section class="hero">
+  <div>
+    <h2>WE’RE HERE TO HELP YOU SUCCEED!</h2>
+    <p>Access notes, previous year questions, PYQ solutions and clear your doubts easily.</p>
+
+    <div class="btn-row">
+      <a href="https://drive.google.com/drive/folders/1Q2iqqmxlO5bIC2B78QY6DbrZ7BYWMa8y?usp=sharing" target="_blank" class="btn primary">
+        📁 Open Google Drive
+      </a>
+      <a href="#resources" class="btn secondary">ℹ️ Learn More</a>
+    </div>
+  </div>
+
+  <div class="hero-image">
+    <img src="soi_logo.png" alt="SOI Logo">
+  </div>
+</section>
+
+<section class="features" id="about">
+  <div class="feature">
+    <div class="icon">📄</div>
+    <h3>NOTES</h3>
+    <p>Well-structured notes for better understanding.</p>
+  </div>
+
+  <div class="feature">
+    <div class="icon">📚</div>
+    <h3>PYQ SOLUTIONS</h3>
+    <p>Previous year questions with solutions.</p>
+  </div>
+
+  <div class="feature">
+    <div class="icon">🎯</div>
+    <h3>EXAM GUIDANCE</h3>
+    <p>Tips and strategies to score better.</p>
+  </div>
+
+  <div class="feature">
+    <div class="icon">⏰</div>
+    <h3>TIME MANAGEMENT</h3>
+    <p>Smart techniques to manage time effectively.</p>
+  </div>
+
+  <div class="feature">
+    <div class="icon">👥</div>
+    <h3>DOUBT SUPPORT</h3>
+    <p>Get your doubts cleared with support.</p>
+  </div>
+</section>
+
+<section class="drive-section" id="resources">
+  <div class="drive-icon">📁</div>
+
+  <div>
+    <h2>NOTES & PYQ RESOURCES</h2>
+    <p>Access all study materials, notes, PYQs and more on our Google Drive.</p>
+  </div>
+
+  <a href="https://drive.google.com/drive/u/2/home" target="_blank" class="drive-btn">
+    Open Google Drive ↗
+  </a>
+</section>
+
+<section class="contact" id="contact">
+  <div class="contact-title">
+    <h2>📞 Contact Our Team</h2>
+  </div>
+
+  <div class="contact-grid">
+    <div class="contact-card">
+      <div class="avatar">👨‍🎓</div>
+      <h3>HARMAN SIDHU</h3>
+      <p>📞 9463870579</p>
+      <a href="tel:9463870579" class="call-btn">Call Now</a>
+    </div>
+
+    <div class="contact-card">
+      <div class="avatar">👨‍🎓</div>
+      <h3>RAJA</h3>
+      <p>📞 9056270967</p>
+      <a href="tel:9056270967" class="call-btn">Call Now</a>
+    </div>
+
+    <div class="contact-card">
+      <div class="avatar">👨‍🎓</div>
+      <h3>ZOBAN MITTAL</h3>
+      <p>📞 9876720262</p>
+      <a href="tel:9876720262" class="call-btn">Call Now</a>
+    </div>
+
+    <div class="contact-card">
+      <div class="avatar">👨‍🎓</div>
+      <h3>ANMOL</h3>
+      <p>📞 6283538489</p>
+      <a href="tel:6283538489" class="call-btn">Call Now</a>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <p>💛 Together we can achieve better results and a brighter future!</p>
+  <h2>We’re With You, Every Step of the Way. 💪</h2>
+</footer>
+
+<script>
+const buttons = document.querySelectorAll(".call-btn, .call-top");
+
+buttons.forEach(button => {
+  button.addEventListener("click", () => {
+    console.log("Call button clicked");
+  });
+});
+</script>
+
+</body>
+</html>
