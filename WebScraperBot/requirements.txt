@@ -1,0 +1,11 @@
+fastapi
+uvicorn[standard]
+python-dotenv
+pydantic
+pydantic-settings
+requests
+beautifulsoup4
+lxml
+langchain
+langchain-core
+langchain-groq
